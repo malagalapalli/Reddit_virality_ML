@@ -1,0 +1,16 @@
+name: reddit-virality
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pandas
+  - numpy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - pyarrow
+  - pip
+  - pip:
+    - datasets
+    - pyspark

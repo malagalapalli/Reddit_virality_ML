@@ -1,0 +1,4 @@
+Model,Best Params,CV AUC,Test AUC,Accuracy,Precision,Recall,F1-Score,TP,TN,FP,FN,Time
+LR (Tuned),"{'C': 10, 'max_iter': 200, 'penalty': 'l2'}",0.513,0.5171,0.7498,0.6874,0.7498,0.6435,11988,8,3996,8,147.9
+RF (Tuned),"{'max_depth': 12, 'min_samples_split': 10, 'n_estimators': 50}",0.6477,0.6484,0.7499,0.8125,0.7499,0.643,11996,3,4001,0,39.3
+GBT (Tuned),"{'learning_rate': 0.1, 'max_depth': 5, 'n_estimators': 50}",0.6562,0.6563,0.7511,0.7329,0.7511,0.648,11976,42,3962,20,524.2

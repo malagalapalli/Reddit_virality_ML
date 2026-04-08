@@ -1,0 +1,117 @@
+# ============================================================================
+# Project Configuration - Reddit Virality Prediction
+# ============================================================================
+
+project:
+  name: "Predicting Social Media Content Virality Using Distributed ML"
+  version: "1.0.0"
+  description: >
+    Binary classification of Reddit posts as viral or non-viral using 
+    PySpark MLlib and scikit-learn on the TLDR-17 dataset (~18GB).
+  
+  dataset:
+    name: "webis/tldr-17"
+    source: "HuggingFace Datasets"
+    original_source: "Reddit (via Pushshift)"
+    size_gb: 18
+    total_rows: ~3000000
+    columns:
+      - author
+      - body
+      - normalizedBody
+      - subreddit
+      - subreddit_id
+      - id
+      - content
+      - summary
+    
+  target_variable: "is_viral"
+  task_type: "binary_classification"
+  
+  # Virality definition:
+  # Posts from top-20% most active subreddits are labelled "viral" (1)
+  # Rationale: High-activity subreddits have wider reach and engagement
+  
+# Feature Engineering
+features:
+  text_features:
+    - body_length          # Character count of body
+    - word_count           # Word count
+    - sentence_count       # Sentence count
+    - avg_word_length      # Average word length
+    - unique_word_ratio    # Vocabulary richness
+    - summary_length       # Summary character count
+    - summary_word_count   # Summary word count
+    - content_density      # summary_length / body_length
+    - has_url              # Contains URL (boolean)
+    - question_count       # Number of question marks
+    - exclamation_count    # Number of exclamation marks
+    - uppercase_ratio      # Ratio of uppercase characters
+    - paragraph_count      # Number of paragraphs
+    
+  tfidf_features:
+    max_features: 5000
+    min_doc_freq: 5
+    max_doc_freq_ratio: 0.8
+    
+  categorical_features:
+    - subreddit            # One-hot or index encoded
+
+# Models Configuration
+models:
+  pyspark_mllib:
+    - name: "Logistic Regression"
+      class: "LogisticRegression"
+      params:
+        maxIter: 100
+        regParam: 0.01
+        
+    - name: "Random Forest"
+      class: "RandomForestClassifier"
+      params:
+        numTrees: 100
+        maxDepth: 10
+        
+    - name: "Decision Tree"
+      class: "DecisionTreeClassifier"
+      params:
+        maxDepth: 10
+        
+    - name: "Gradient Boosted Trees"
+      class: "GBTClassifier"
+      params:
+        maxIter: 50
+        maxDepth: 5
+        
+  sklearn:
+    - name: "Logistic Regression"
+      class: "LogisticRegression"
+    - name: "Random Forest"
+      class: "RandomForestClassifier"
+    - name: "Decision Tree"
+      class: "DecisionTreeClassifier"
+    - name: "Gradient Boosting"
+      class: "GradientBoostingClassifier"
+
+# Evaluation Metrics
+evaluation:
+  classification:
+    - accuracy
+    - precision
+    - recall
+    - f1_score
+    - auc_roc
+    - confusion_matrix
+  
+  advanced:
+    - bootstrap_confidence_intervals
+    - stability_analysis
+    
+# Scalability Testing
+scalability:
+  strong_scaling:
+    data_fraction: 0.5
+    core_configs: [1, 2, 4, 8]
+  weak_scaling:
+    fractions: [0.1, 0.25, 0.5, 1.0]
+    core_configs: [1, 2, 4, 8]

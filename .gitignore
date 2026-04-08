@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs and outputs
+*.log
+output.log
+results.log
+
+# Local data artifacts (keep project lightweight on GitHub)
+data/raw/*.csv
+data/parquet/
+data/partitioned/
+data/sample/
+data/models/
+
+# Local IDE/system
+.vscode/
+.DS_Store
+Thumbs.db

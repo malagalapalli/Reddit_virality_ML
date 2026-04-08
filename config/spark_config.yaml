@@ -1,0 +1,47 @@
+# ============================================================================
+# Spark Configuration for Reddit Virality Prediction Project
+# ============================================================================
+# Hardware-aware settings for distributed processing of ~18GB Reddit dataset
+
+spark:
+  app_name: "RedditViralityPrediction"
+  master: "local[*]"         # Use all available cores
+  
+  # Memory Configuration
+  driver_memory: "8g"        # Driver memory allocation
+  executor_memory: "4g"      # Per-executor memory
+  max_result_size: "4g"      # Max size of serialized results
+  
+  # Shuffle & Parallelism
+  shuffle_partitions: 200    # Number of partitions after shuffle
+  default_parallelism: 8     # Default parallelism for RDDs
+  
+  # Serialization
+  serializer: "org.apache.spark.serializer.KryoSerializer"
+  
+  # Adaptive Query Execution (Spark 3.x)
+  adaptive_enabled: true
+  coalesce_partitions: true
+  
+  # Memory Management
+  memory_fraction: 0.8
+  memory_storage_fraction: 0.3
+  off_heap_enabled: true
+  off_heap_size: "2g"
+
+# Data paths
+data:
+  raw_csv: "data/raw/reddit_posts.csv"
+  parquet_dir: "data/processed/reddit_posts.parquet"
+  partitioned_dir: "data/processed/reddit_partitioned.parquet"
+  sample_dir: "data/processed/sample"
+  model_dir: "models/"
+  tableau_dir: "tableau/data"
+  
+# Processing parameters  
+processing:
+  sample_fraction: 0.1       # 10% sample for development
+  test_size: 0.2             # 80/20 train-test split
+  random_seed: 42
+  virality_threshold: 0.80   # Top 20% subreddits = viral
+  max_features_tfidf: 5000   # TF-IDF vocabulary size
